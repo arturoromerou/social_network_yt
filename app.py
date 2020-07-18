@@ -1,10 +1,25 @@
 from flask import Flask, render_template, request
+from flask_cors import CORS
+from models import get_posts, create_post
 
 app = Flask(__name__)
 
-@app.route('/')
-def hello():
-    return 'Hello World!'
+CORS(app)
+
+@app.route('/', methods=['GET','POST'])
+def index():
+
+    if request.method == 'GET':
+        pass
+
+    if request.method == 'POST':
+        name = request.form.get('name')
+        post = request.form.get('post')
+        create_post(name, post)
+
+    post = get_posts()
+
+    return render_template('index.html', posts=post)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
